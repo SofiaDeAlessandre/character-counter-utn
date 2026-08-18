@@ -5,9 +5,34 @@ const App = () => {
   const [text, setText] = useState(
     "Esto es un texto de prueba, puedes borrarlo, modificarlo o comprobar que ña app está funcionando correctamente",
   );
+  
  const [excludeSpaces, setExcludeSpaces] = useState(false)
+ const [limitCharacter, setLimiterCharacter] = useState(false)
+ const [limitValue, setLimitValue] = useState(10)
 
  const characters = excludeSpaces ? text.replace(/\s/g, "").length : text.length
+
+ const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length //MEJORABLE, los espacios acá son tratados como caracteres !! 
+
+ const sentences = text.trim() === "" ? 0 : text.split(/[.!?]/).filter(sentence => sentence.trim() !== "").length
+
+ const handleChangeTextarea = (e) => {
+  const value = e.target.value
+
+  if (limitCharacter) {
+if (value.length <= limitValue) {
+setText(value)
+}
+  } else {
+setText(value)
+  }
+ }
+
+ const handleChangeInputLimit = () => {
+  setLimiterCharacter(!limitCharacter)
+  const newText = text.slice(0, limitValue)
+  setText(newText)
+ }
 
   return (
     <main>
@@ -18,7 +43,7 @@ const App = () => {
       </h2>
       <textarea
         placeholder="Escribe tu texto..."
-        onChange={(e) => setText(e.target.value)}
+        onChange={handleChangeTextarea}
         value={text}
       ></textarea>
       <div>
@@ -29,8 +54,25 @@ const App = () => {
           onChange={() => setExcludeSpaces(!excludeSpaces)}/>
           Excluir espacios
         </label>
+           <label>
+          <input
+           type="checkbox" 
+           checked={limitCharacter}
+          onChange={handleChangeInputLimit}/>
+          Límite de caracteres
+        </label>
+        {
+          limitCharacter &&
+           <input type="number"
+            value={limitValue} 
+            onChange={(e) => setLimitValue(e.target.value)}
+            />
+        }
       </div>
       <p>Cantidad de caracteres: {characters}</p>
+      <p>Cantidad de palabras: {words}</p>
+      <p>Cantidad de oraciones: {sentences}</p>
+      
     </main>
   );
 };
