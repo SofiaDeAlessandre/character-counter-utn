@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Header } from "./components/Header.jsx";
+import { WriteArea } from "./components/WriteArea.jsx";
 
 const App = () => {
   const [text, setText] = useState(
@@ -76,11 +77,12 @@ const App = () => {
         Analyze you text <br />
         in real-time.
       </h2>
-      <textarea
-        placeholder="Escribe tu texto..."
-        onChange={handleChangeTextarea}
-        value={text}
-      ></textarea>
+      
+<WriteArea 
+handleChangeTextarea={handleChangeTextarea}
+text={text}
+/>
+
       <div>
         <label>
           <input
