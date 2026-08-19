@@ -22,7 +22,7 @@ const App = () => {
       ? 0
       : text.split(/[.!?]/).filter((sentence) => sentence.trim() !== "").length;
 
-  const readingTime = Math.ceil(words / 200);
+  const readingTime = words === 0 ? 0 : Math.ceil(words / 200);
 
   const handleChangeTextarea = (e) => {
     const value = e.target.value;
@@ -109,7 +109,7 @@ const App = () => {
       <p>Cantidad de caracteres: {characters}</p>
       <p>Cantidad de palabras: {words}</p>
       <p>Cantidad de oraciones: {sentences}</p>
-      <p>Tiempo aprox. de lectura: ~ {readingTime} min</p>
+      <p>Approx. reading time: {readingTime < 1 ? "< 1 minute" : `${readingTime} minutes`}</p>
 
       <section>
         <h2>Cantidad de letras</h2>
