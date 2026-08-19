@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Header } from "./components/Header.jsx";
 import { WriteArea } from "./components/WriteArea.jsx";
+import { Controlls } from "./components/Controlls.jsx";
 
 const App = () => {
   const [text, setText] = useState(
@@ -12,11 +13,19 @@ const App = () => {
   const [limitValue, setLimitValue] = useState(10);
   const [showAll, setShowAll] = useState(false);
 
+  const handleExcludeSpaces = () => {
+    setExcludeSpaces(!excludeSpaces)
+  }
+
+ const handleLimitValue = (value) => {
+  setLimitValue(Number(value));
+};
+
   const characters = excludeSpaces
     ? text.replace(/\s/g, "").length
     : text.length;
 
-  const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length; //MEJORABLE, los espacios acá son tratados como caracteres !!
+  const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length; 
 
   const sentences =
     text.trim() === ""
@@ -38,14 +47,21 @@ const App = () => {
   };
 
   const handleChangeInputLimit = () => {
-    setLimiterCharacter(!limitCharacter);
-    const newText = text.slice(0, limitValue);
-    setText(newText);
+    // setLimiterCharacter(!limitCharacter);
+    // const newText = text.slice(0, limitValue);
+    // setText(newText);
+    const newLimitState = !limitCharacter;
+
+  setLimiterCharacter(newLimitState);
+
+  if (newLimitState) {
+    setText((prevText) => prevText.slice(0, limitValue));
+  }
   };
 
   //FUNCIONALIDAD EXTRA: PODRIA HACERSE UN CHECKBOX PARA QUE OMITA O NO CARACTERES ESPECIALES / NUMEROS
 
-  const cleanText = text.toLowerCase().replace(/[^a-záéíóúñ]/g, "");
+  const cleanText = text.toLowerCase().replace(/[^a-záéíóúüñ]/g, "");
   const total = cleanText.length;
 
   const dictionaryLetters = {};
@@ -61,7 +77,7 @@ const App = () => {
     const infoToRenderLetter = {
       letterName: letter,
       amount: amountLetter,
-      percentage: (amountLetter / total) * 100,
+      percentage: total === 0 ? 0 : (amountLetter / total) * 100, // Protección ante NaN
     };
     return infoToRenderLetter;
   });
@@ -83,31 +99,14 @@ handleChangeTextarea={handleChangeTextarea}
 text={text}
 />
 
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={excludeSpaces}
-            onChange={() => setExcludeSpaces(!excludeSpaces)}
-          />
-          Excluir espacios
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={limitCharacter}
-            onChange={handleChangeInputLimit}
-          />
-          Límite de caracteres
-        </label>
-        {limitCharacter && (
-          <input
-            type="number"
-            value={limitValue}
-            onChange={(e) => setLimitValue(e.target.value)}
-          />
-        )}
-      </div>
+<Controlls 
+  excludeSpaces={excludeSpaces}
+  handleExcludeSpaces={handleExcludeSpaces}
+  limitCharacter={limitCharacter}
+  handleChangeInputLimit={handleChangeInputLimit}
+  limitValue={limitValue}
+  handleLimitValue={handleLimitValue}
+/>
       <p>Cantidad de caracteres: {characters}</p>
       <p>Cantidad de palabras: {words}</p>
       <p>Cantidad de oraciones: {sentences}</p>
