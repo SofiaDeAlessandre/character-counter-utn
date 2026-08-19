@@ -9,6 +9,7 @@ const App = () => {
   const [excludeSpaces, setExcludeSpaces] = useState(false);
   const [limitCharacter, setLimiterCharacter] = useState(false);
   const [limitValue, setLimitValue] = useState(10);
+  const [showAll, setShowAll] = useState(false);
 
   const characters = excludeSpaces
     ? text.replace(/\s/g, "").length
@@ -42,6 +43,31 @@ const App = () => {
   };
 
   //FUNCIONALIDAD EXTRA: PODRIA HACERSE UN CHECKBOX PARA QUE OMITA O NO CARACTERES ESPECIALES / NUMEROS
+
+  const cleanText = text.toLowerCase().replace(/[^a-záéíóúñ]/g, "");
+  const total = cleanText.length;
+
+  const dictionaryLetters = {};
+
+  cleanText.split("").forEach((letter) => {
+    dictionaryLetters[letter] = (dictionaryLetters[letter] || 0) + 1;
+  });
+
+  const letters = Object.entries(dictionaryLetters).map((dataLetter) => {
+    const letter = dataLetter[0];
+    const amountLetter = dataLetter[1];
+
+    const infoToRenderLetter = {
+      letterName: letter,
+      amount: amountLetter,
+      percentage: (amountLetter / total) * 100,
+    };
+    return infoToRenderLetter;
+  });
+
+  const sortLetters = letters.sort((a, b) => b.amount - a.amount);
+
+  const visibleLetters = showAll ? sortLetters : sortLetters.slice(0, 5);
 
   return (
     <main>
@@ -84,6 +110,24 @@ const App = () => {
       <p>Cantidad de palabras: {words}</p>
       <p>Cantidad de oraciones: {sentences}</p>
       <p>Tiempo aprox. de lectura: ~ {readingTime} min</p>
+
+      <section>
+        <h2>Cantidad de letras</h2>
+        <button onClick={() => setShowAll(!showAll)}>
+          {showAll ? "Ver menos 🔼" : "Ver todos 🔽"}
+        </button>
+        <article>
+          {visibleLetters.map((letter) => (
+            <div key={letter.letterName}>
+              <span>{letter.letterName.toUpperCase()}</span>
+              <meter min="0" max="100" value={letter.percentage}></meter>
+              <span>
+                {letter.amount} ({letter.percentage.toFixed(1)}%){" "}
+              </span>
+            </div>
+          ))}
+        </article>
+      </section>
     </main>
   );
 };
