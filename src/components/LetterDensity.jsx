@@ -2,7 +2,7 @@ import { ProgressBar } from "./ProgressBar";
 
 const LetterDensity = ({ visibleLetters, handleShowAll, showAll }) => {
   return (
-    <section>
+   <section>
       <h2>Cantidad de letras</h2>
       <button onClick={() => handleShowAll(!showAll)}>
         {showAll ? "Ver menos 🔼" : "Ver todos 🔽"}
@@ -15,7 +15,8 @@ const LetterDensity = ({ visibleLetters, handleShowAll, showAll }) => {
         </ul>
       </article>
     </section>
-  );
+  )
+   
 };
 
 export { LetterDensity };

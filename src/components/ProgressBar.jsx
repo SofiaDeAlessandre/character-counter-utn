@@ -1,6 +1,6 @@
 const ProgressBar = ({ letter }) => {
   return (
-    <li key={letter.letterName}>
+    <li>
       <span>{letter.letterName.toUpperCase()}</span>
       <meter min="0" max="100" value={letter.percentage}></meter>
       <span>

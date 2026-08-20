@@ -5,5 +5,10 @@
 }
 
 body {
-  padding: 20px;
+  padding: 50px;
+}
+
+.dark-theme {
+  background-color: black;
+  color: white;
 }
