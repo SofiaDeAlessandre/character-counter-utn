@@ -2,21 +2,21 @@ import { ProgressBar } from "./ProgressBar";
 
 const LetterDensity = ({ visibleLetters, handleShowAll, showAll }) => {
   return (
-   <section>
-      <h2>Cantidad de letras</h2>
-      <button onClick={() => handleShowAll(!showAll)}>
-        {showAll ? "Ver menos 🔼" : "Ver todos 🔽"}
-      </button>
-      <article>
-        <ul>
+    <>
+      <section className="density">
+        <h3 className="density-title">Letter Density</h3>
+        <ul style={{ listStyle: "none" }}>
           {visibleLetters.map((letter) => (
             <ProgressBar key={letter.letterName} letter={letter} />
           ))}
         </ul>
-      </article>
-    </section>
-  )
-   
+        <button className="see-more" onClick={handleShowAll}>
+          <span>{showAll ? "See less" : "See more"}</span>
+          <span className="see-more-icon">{showAll ? "▲" : "▼"}</span>
+        </button>
+      </section>
+    </>
+  );
 };
 
 export { LetterDensity };

@@ -1,12 +1,21 @@
 const ProgressBar = ({ letter }) => {
   return (
-    <li>
-      <span>{letter.letterName.toUpperCase()}</span>
-      <meter min="0" max="100" value={letter.percentage}></meter>
-      <span>
-        {letter.amount} ({letter.percentage.toFixed(1)}%)
-      </span>
-    </li>
+    <>
+      <li className="density-row">
+        <span className="density-letter">
+          {letter.letterName.toUpperCase()}
+        </span>
+        <progress
+          className="density-bar"
+          min="0"
+          max="100"
+          value={letter.percentage}
+        ></progress>
+        <span className="density-count">
+          {letter.amount} ({letter.percentage.toFixed(2)}%)
+        </span>
+      </li>
+    </>
   );
 };
 

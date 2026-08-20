@@ -1,18 +1,17 @@
-import { useState } from "react"
+const Header = ({ dark, handleDarkTheme }) => {
+  return (
+    <>
+      <header>
+        <div className="logo-title">
+          <img className="header-image" src="/images/logo.png" alt="logo" />
+          <h1>Character Counter</h1>
+        </div>
+        <button className="header-button" onClick={() => handleDarkTheme()}>
+          {dark ? "☀" : "🌙"}
+        </button>
+      </header>
+    </>
+  );
+};
 
-const Header = () => {
-
-    const [dark, setDark] = useState(false)
-
-    return (
-         <header className={`${dark ? "dark-theme" : ""}`}>
-           <div>
-            <p>C</p>
-            <h1>Character Counter UTN</h1>
-            </div> 
-            <button onClick={() => setDark(!dark)}>☀</button>
-         </header>       
-    )
-}
-
-export { Header }
+export { Header };

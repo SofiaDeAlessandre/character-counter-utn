@@ -1,14 +1,21 @@
 const Stats = ({ characters, words, sentences, readingTime }) => {
   return (
-    <div>
-      <p>Cantidad de caracteres: {characters}</p>
-      <p>Cantidad de palabras: {words}</p>
-      <p>Cantidad de oraciones: {sentences}</p>
-      <p>
-        Approx. reading time:{" "}
-        {readingTime < 1 ? "< 1 minute" : `${readingTime} minutes`}
-      </p>
-    </div>
+    <>
+      <section className="cards">
+        <div className="card card-teal">
+          <span className="card-number">{characters}</span>
+          <span className="card-label">Total Characters</span>
+        </div>
+        <div className="card card-purple">
+          <span className="card-number">{words}</span>
+          <span className="card-label">Word Count</span>
+        </div>
+        <div className="card card-pink">
+          <span className="card-number">{sentences}</span>
+          <span className="card-label">Sentence Count</span>
+        </div>
+      </section>
+    </>
   );
 };
 

@@ -6,14 +6,30 @@ import { Stats } from "./components/Stats.jsx";
 import { LetterDensity } from "./components/LetterDensity.jsx";
 
 const App = () => {
-  const [text, setText] = useState(
-    "Esto es un texto de prueba, puedes borrarlo, modificarlo o comprobar que la app está funcionando correctamente",
+  const [dark, setDark] = useState(
+    JSON.parse(localStorage.getItem("theme")) === "dark" ? true : false,
   );
+
+  const [text, setText] = useState(
+    "This is a sample text, you can delete it, modify it, or check that the app is working correctly.",
+  );
+
+  document.body.className = dark ? "" : "light-theme";
 
   const [excludeSpaces, setExcludeSpaces] = useState(false);
   const [limitCharacter, setLimiterCharacter] = useState(false);
+  const [originalText, setOriginalText] = useState("");
   const [limitValue, setLimitValue] = useState(10);
   const [showAll, setShowAll] = useState(false);
+
+  const handleDarkTheme = () => {
+    setDark(!dark);
+    if (!dark) {
+      localStorage.setItem("theme", JSON.stringify("dark"));
+    } else {
+      localStorage.removeItem("theme");
+    }
+  };
 
   const handleExcludeSpaces = () => {
     setExcludeSpaces(!excludeSpaces);
@@ -39,14 +55,20 @@ const App = () => {
     }
   };
 
-  const handleChangeInputLimit = () => {
-    const newLimitState = !limitCharacter;
-    setLimiterCharacter(newLimitState);
+const handleChangeInputLimit = () => {
+  const newLimitState = !limitCharacter;
+  setLimiterCharacter(newLimitState);
 
-    if (newLimitState) {
-      setText((prevText) => prevText.slice(0, limitValue));
-    }
-  };
+  if (newLimitState) {
+    // Al activar se guarda el texto completo y se corta
+    setOriginalText(text);
+    setText((prevText) => prevText.slice(0, limitValue));
+  } else {
+    // Al desactivar se restaura el texto original
+    setText(originalText);
+    setOriginalText("");
+  }
+};
 
   const characters = excludeSpaces
     ? text.replace(/\s/g, "").length
@@ -87,39 +109,43 @@ const App = () => {
   const visibleLetters = showAll ? sortLetters : sortLetters.slice(0, 5);
 
   return (
-    <main>
-      <Header />
-      <h2>
-        Analyze you text <br />
-        in real-time.
-      </h2>
+    <>
+      <Header dark={dark} handleDarkTheme={handleDarkTheme} />
 
-      <WriteArea handleChangeTextarea={handleChangeTextarea} text={text} />
+      <main>
+        <h2 className="hero-title">
+          Analyze your text <br />
+          in real-time.
+        </h2>
 
-      <Controlls
-        excludeSpaces={excludeSpaces}
-        handleExcludeSpaces={handleExcludeSpaces}
-        limitCharacter={limitCharacter}
-        handleChangeInputLimit={handleChangeInputLimit}
-        limitValue={limitValue}
-        handleLimitValue={handleLimitValue}
-      />
+        <WriteArea handleChangeTextarea={handleChangeTextarea} text={text} />
 
-      <Stats
-        words={words}
-        sentences={sentences}
-        readingTime={readingTime}
-        characters={characters}
-      />
-
-      {text && (
-        <LetterDensity
-          visibleLetters={visibleLetters}
-          showAll={showAll}
-          handleShowAll={handleShowAll}
+        <Controlls
+          excludeSpaces={excludeSpaces}
+          handleExcludeSpaces={handleExcludeSpaces}
+          limitCharacter={limitCharacter}
+          handleChangeInputLimit={handleChangeInputLimit}
+          limitValue={limitValue}
+          handleLimitValue={handleLimitValue}
+          readingTime={readingTime}
         />
-      )}
-    </main>
+
+        <Stats
+          words={words}
+          sentences={sentences}
+          readingTime={readingTime}
+          characters={characters}
+        />
+
+        {text && (
+          <LetterDensity
+            visibleLetters={visibleLetters}
+            showAll={showAll}
+            handleShowAll={handleShowAll}
+          />
+        )}
+      </main>
+    </>
   );
 };
 
