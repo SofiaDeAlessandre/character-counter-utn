@@ -3,6 +3,7 @@ import { Header } from "./components/Header.jsx";
 import { WriteArea } from "./components/WriteArea.jsx";
 import { Controlls } from "./components/Controlls.jsx";
 import { Stats } from "./components/Stats.jsx";
+import { LetterDensity } from "./components/LetterDensity.jsx"
 
 const App = () => {
   const [text, setText] = useState(
@@ -21,6 +22,10 @@ const App = () => {
  const handleLimitValue = (value) => {
   setLimitValue(Number(value));
 };
+
+const handleShowAll = () => {
+    setShowAll(!showAll)
+  }
 
   const characters = excludeSpaces
     ? text.replace(/\s/g, "").length
@@ -108,28 +113,18 @@ text={text}
   limitValue={limitValue}
   handleLimitValue={handleLimitValue}
 />
+
    <Stats 
    words={words} 
    sentences={sentences} 
    readingTime={readingTime} 
    characters={characters}/>
-      <section>
-        <h2>Cantidad de letras</h2>
-        <button onClick={() => setShowAll(!showAll)}>
-          {showAll ? "Ver menos 🔼" : "Ver todos 🔽"}
-        </button>
-        <article>
-          {visibleLetters.map((letter) => (
-            <div key={letter.letterName}>
-              <span>{letter.letterName.toUpperCase()}</span>
-              <meter min="0" max="100" value={letter.percentage}></meter>
-              <span>
-                {letter.amount} ({letter.percentage.toFixed(1)}%){" "}
-              </span>
-            </div>
-          ))}
-        </article>
-      </section>
+    
+ <LetterDensity 
+ visibleLetters={visibleLetters} 
+ showAll={showAll}
+ handleShowAll={handleShowAll}
+ />
     </main>
   );
 };
