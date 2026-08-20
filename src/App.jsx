@@ -7,8 +7,10 @@ import { LetterDensity } from "./components/LetterDensity.jsx";
 
 const App = () => {
   const [dark, setDark] = useState(
-    JSON.parse(localStorage.getItem("theme")) === "dark" ? true : false,
-  );
+  localStorage.getItem("theme") === null 
+    ? true  // default oscuro si no hay nada guardado
+    : JSON.parse(localStorage.getItem("theme")) === "dark"
+);
 
   const [text, setText] = useState(
     "This is a sample text, you can delete it, modify it, or check that the app is working correctly.",

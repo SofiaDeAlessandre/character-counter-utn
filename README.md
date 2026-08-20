@@ -64,7 +64,7 @@ Las barras de progreso se implementaron con el elemento nativo `<progress>`, est
 
 ## 7. Deploy
 
-🔗 [Ver aplicación en Netlify]() 
+🔗 [Ver aplicación en Netlify](https://character-counter-utn.netlify.app/) 
 
 ## 8. Capturas del resultado final
 
